@@ -1,19 +1,17 @@
-# Etapa 1 - Build com Maven atualizado + Java 21
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
 COPY . .
 
-RUN mvn clean package -DskipTests
+RUN mvn clean install -DskipTests
 
-# Etapa 2 - Runtime somente com Java (leve e otimizado)
-FROM eclipse-temurin:21-jdk-jammy
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/messages-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
