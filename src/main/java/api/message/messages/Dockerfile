@@ -1,11 +1,10 @@
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Etapa de build
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
-# Copia apenas o pom.xml para resolver as dependências primeiro
+# Copia apenas o pom.xml primeiro para fazer cache das dependências
 COPY pom.xml .
-
-# Baixa as dependências antes de copiar o resto do código
 RUN mvn dependency:go-offline
 
 # Agora copia todo o restante do projeto
@@ -14,11 +13,12 @@ COPY . .
 # Faz o build da aplicação
 RUN mvn clean package -DskipTests
 
-# Imagem de runtime
-FROM eclipse-temurin:17-jre
+# Etapa de execução
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
+# Copia o jar gerado na etapa anterior
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
