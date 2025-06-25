@@ -1,4 +1,4 @@
-# 📖 API de Textos - Momento Espírita
+# 📖 API de Textos 
 
 Esta API foi desenvolvida para expor de forma estruturada os textos do site [Momento Espírita](https://www.momento.com.br/pt/textos.php), cuja página não foi originalmente projetada para consumo via API.
 
