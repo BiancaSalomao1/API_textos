@@ -37,11 +37,7 @@
 			<version>2.5.0</version>
 		</dependency>
 
-		<!-- Thymeleaf (opcional, se usar front) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
+
 
 		<!-- Jsoup para scraping -->
 		<dependency>
@@ -50,12 +46,7 @@
 			<version>1.17.2</version>
 		</dependency>
 
-		<!-- PostgreSQL (se for usar banco) -->
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+
 
 		<!-- Teste -->
 		<dependency>
