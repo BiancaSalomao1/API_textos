@@ -71,23 +71,38 @@ public class ScraperService {
         return resultado;
     }
 
-    // 🔥 Buscar texto aleatório por IDs entre 0002 e 9999
     public Map<String, String> pegarTextoAleatorioPorIntervalo() {
-        try {
-            Random random = new Random();
-            int numero = random.nextInt(4998) + 100; // Gera número de 2 até 9999
-            String idFormatado = String.format("%04d", numero); // Formata como 4 dígitos, ex.: 0002, 0234
+        Random random = new Random();
+        int tentativasMax = 10; // evitar loop infinito
+        int tentativas = 0;
 
-            System.out.println("🔢 ID sorteado: " + idFormatado);
+        while (tentativas < tentativasMax) {
+            try {
+                int numero = random.nextInt(9998) + 2; // de 0002 a 9999
+                String idFormatado = String.format("%04d", numero);
 
-            return pegarTextoPorId(idFormatado);
+                System.out.println("🔢 Tentativa " + (tentativas + 1) + " com ID: " + idFormatado);
 
-        } catch (Exception e) {
-            Map<String, String> erro = new HashMap<>();
-            erro.put("status", "erro");
-            erro.put("mensagem", "❌ Erro ao buscar texto aleatório: " + e.getMessage());
-            return erro;
+                Map<String, String> texto = pegarTextoPorId(idFormatado);
+
+                String conteudo = texto.get("conteudo");
+                if (conteudo != null && conteudo.trim().split("\\s+").length > 5) {
+                    return texto; // conteúdo válido
+                }
+
+            } catch (IOException e) {
+                System.out.println("⚠ Erro ao tentar ID: " + e.getMessage());
+            }
+
+            tentativas++;
         }
+
+        // Se não achou nenhum conteúdo válido após as tentativas
+        Map<String, String> erro = new HashMap<>();
+        erro.put("status", "erro");
+        erro.put("mensagem", "❌ Nenhum conteúdo válido encontrado após " + tentativasMax + " tentativas.");
+        return erro;
     }
+
 
 }
